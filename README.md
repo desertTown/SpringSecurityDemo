@@ -167,4 +167,19 @@ http://127.0.0.1:8080/
 所以Filter的执行情况：
 
 BeforeLoginFilter->AtLoginFilter->UsernamePasswordAuthenticationFilter->AfterLoginFilter            
-     
+
+#### 11.页面白名单和获取登录信息 
+
+把/res/的所有.js,html设置为白名单：
+```
+http.authorizeRequests() // 定义哪些URL需要被保护、哪些不需要被保护
+            .antMatchers("/res/**/*.{js,html}").permitAll()
+
+```
+
+获取登录信息
+```
+Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+```
+
+http://127.0.0.1:8080/index_info     

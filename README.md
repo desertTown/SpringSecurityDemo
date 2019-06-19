@@ -84,4 +84,23 @@ http://127.0.0.1:8080/hello
     
     http://127.0.0.1:8080/hello/helloAdmin  访问被拒绝：
 
-#### 5. 基于MySQL数据库的身份认证和角色授权       
+#### 5. 基于MySQL数据库的身份认证和角色授权 
+验证方式和上例一样
+
+#### 6. 自定义登录页面和构建主页
+复写登录页面的路径
+
+```
+        @Override
+    protected void configure(HttpSecurity http) throws Exception {  
+        http.authorizeRequests() // 定义哪些URL需要被保护、哪些不需要被保护
+            .antMatchers("/login").permitAll()// 设置所有人都可以访问登录页面
+            .anyRequest().authenticated()  // 任何请求,登录后可以访问
+            .and()
+            .formLogin().loginPage("/login")
+            ;
+
+    }
+```  
+
+测试：  http://127.0.0.1:8080/login    

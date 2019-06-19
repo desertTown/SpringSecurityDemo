@@ -103,4 +103,27 @@ http://127.0.0.1:8080/hello
     }
 ```  
 
-测试：  http://127.0.0.1:8080/login    
+测试：  http://127.0.0.1:8080/login
+
+
+#### 7.  登出和403处理 -- 小技巧
+3.1 修改.html页面不生效
+
+       修改了比如index.html页面之后，立即访问不能看到最新的页面，需要重新启动才能看到
+       最新的更改，这是因为模板引擎有缓存，需要先将缓存关闭掉，
+       在application.properties中添加如下配置：
+       spring.thymeleaf.cache=false
+3.2 修改Java需要重启才能生效
+
+       修改了Java代码之后，每次都是需要重新启动在部署的，这个开发效率很低，
+       需要使用devtools进行热部署，只需要添加以下的依赖：
+       ```
+        <dependency>
+              <groupId>org.springframework.boot</groupId>
+              <artifactId>spring-boot-devtools</artifactId>
+              <optional>true</optional>
+        </dependency>       
+       ``` 
+       
+页面修改之后(JAVA Code也一样)，  按 Ctrl+F9 重新编译，   再刷新页面就可以了
+     

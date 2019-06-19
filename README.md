@@ -82,4 +82,6 @@ http://127.0.0.1:8080/hello
     
     紧接着访问地址：
     
-    http://127.0.0.1:8080/hello/helloAdmin  访问被拒绝：   
+    http://127.0.0.1:8080/hello/helloAdmin  访问被拒绝：
+
+#### 5. 基于MySQL数据库的身份认证和角色授权       

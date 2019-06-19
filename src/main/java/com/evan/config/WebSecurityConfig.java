@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration  // 注解这是一个配置类。
 @EnableWebSecurity  // 注解开启Spring Security的功能。
@@ -44,6 +45,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .formLogin().loginPage("/login")
         ;
+
+        http.addFilterBefore(new BeforeLoginFilter(), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterAfter(new AfterLoginFilter(), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterAt(new AtLoginFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 
     // 注入PsswordEncoder,

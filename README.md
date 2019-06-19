@@ -130,4 +130,41 @@ http://127.0.0.1:8080/hello
 
 #### 8. 动态加载角色
 
+
+#### 9. 原理1
+Filter
+
+       如果要对Web资源进行保护，最好的办法莫过于Filter，要想对方法调用进行保护，最好的办法莫过于AOP。Spring Security对Web资源的保护，就是靠Filter实现的：
+#### 10. 自定义Filter
+
+         怎么在Spring Security中的Filter指定位置加入自定义的Filter呐？Spring Security的HttpSecurity为此提供了三个常用方法来配置：
+         
+         （1）addFilterBefore(Filter filter, Class<? extends Filter>beforeFilter)
+         
+         在 beforeFilter 之前添加 filter
+         
+         （2）addFilterAfter(Filter filter, Class<? extends Filter>afterFilter)
+         
+         在 afterFilter 之后添加 filter
+         
+         （3）addFilterAt(Filter filter, Class<? extends Filter> atFilter)
+         
+         在 atFilter 相同位置添加 filter， 此 filter 不覆盖 filter     
+1.5 测试
+
+       启动测试，访问地址：
+
+http://127.0.0.1:8080/
+
+       控制台的输出如下：
+
+        this is a filter beforeUsernamePasswordAuthenticationFilter.
+        
+        this is a filter atUsernamePasswordAuthenticationFilter.
+        
+        this is a filter after UsernamePasswordAuthenticationFilter.
+
+所以Filter的执行情况：
+
+BeforeLoginFilter->AtLoginFilter->UsernamePasswordAuthenticationFilter->AfterLoginFilter            
      

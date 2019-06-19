@@ -1,3 +1,5 @@
+总参考链接 https://412887952-qq-com.iteye.com/blog/2441544
+
 #### 初体验
 Spring Security 5.x 之后， 如果想关闭security校验，#security.basic.enabled=false 是无效的， 使用
 @SpringBootApplication(exclude= SecurityAutoConfiguration.class)
@@ -59,3 +61,25 @@ http://127.0.0.1:8080/hello
         这时候会看到403的报错：
 
 
+#### 4. 基于内存数据库的身份认证和角色授权
+
+编码思路
+``` 
+这里我们使用的是Spring Data JPA进行操作数据库，所以需要添加相关的依赖；
+其次就是需要定义一个保存用户基本的实体类；再者需要定义相应的服务获取用户的信息
+；最后重写UserDetailsService的loadUserByUsername方法从数据库中获取用户信息
+，传给Spring Security进行处理。
+```
+测试：
+
+    （1）测试账号：user/123
+    
+           启动应用访问地址：
+    
+    http://127.0.0.1:8080/hello/helloUser
+    
+    自动跳转到登录页面，输入账号user/123，可以看到页面：    
+    
+    紧接着访问地址：
+    
+    http://127.0.0.1:8080/hello/helloAdmin  访问被拒绝：   

@@ -1,6 +1,7 @@
 package com.evan.config;
 
 
+import com.evan.permission.bean.Role;
 import com.evan.permission.bean.UserInfo;
 import com.evan.permission.service.UserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +22,6 @@ public class CustomUserDetailService implements UserDetailsService {
 
     @Autowired
     private UserInfoService userInfoService;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -37,7 +36,9 @@ public class CustomUserDetailService implements UserDetailsService {
         //定义权限列表.
         List<GrantedAuthority> authorities = new ArrayList<>();
         // 用户可以访问的资源名称（或者说用户所拥有的权限） 注意：必须"ROLE_"开头
-        authorities.add(new SimpleGrantedAuthority("ROLE_"+userInfo.getRole().name()));
+        for(Role role:userInfo.getRoles()) {
+            authorities.add(new SimpleGrantedAuthority("ROLE_"+role.getName()));
+        }
 
 
         User userDetails = new User(userInfo.getUsername(),userInfo.getPassword(),authorities);

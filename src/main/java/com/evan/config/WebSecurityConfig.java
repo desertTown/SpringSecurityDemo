@@ -13,7 +13,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.RememberMeServices;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.security.web.authentication.rememberme.TokenBasedRememberMeServices;
+
+import javax.sql.DataSource;
 
 @Configuration  // 注解这是一个配置类。
 @EnableWebSecurity  // 注解开启Spring Security的功能。
@@ -22,6 +26,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     /** 用来防止token被修改的key */
     private String rememberMeKey = "evan2019";
+
+
+    @Autowired
+    private DataSource dataSource;
 
     @Autowired
     private CustomUserDetailService customUserDetailService;
@@ -58,7 +66,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .formLogin().loginPage("/login")
                 //设置记住我
-                .and().rememberMe().key(rememberMeKey).rememberMeServices(rememberMeServices())
+//                .and().rememberMe().key(rememberMeKey).rememberMeServices(rememberMeServices())
+                .and().rememberMe().tokenRepository(tokenRepository()).tokenValiditySeconds(1209600) .userDetailsService(customUserDetailService)
                 // 设置session并发为1
                 .and().sessionManagement().maximumSessions(1)
         ;
@@ -74,16 +83,25 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return new MyPasswordEncoder();
     }
 
-    @Bean
-    public RememberMeServices rememberMeServices() {
-        System.out.println("WebSecurityConfig.tokenBasedRememberMeServices()="+customUserDetailService);
-        TokenBasedRememberMeServices tbrms = new TokenBasedRememberMeServices(rememberMeKey, customUserDetailService);
-        // [可选]需要配置cookie的过期时间，默认过时时间1209600秒，即2个星期。这里设置cookie过期时间为1天
-        tbrms.setTokenValiditySeconds(60 * 60 * 24 * 1);
+//    @Bean
+//    public RememberMeServices rememberMeServices() {
+//        System.out.println("WebSecurityConfig.tokenBasedRememberMeServices()="+customUserDetailService);
+//        TokenBasedRememberMeServices tbrms = new TokenBasedRememberMeServices(rememberMeKey, customUserDetailService);
+//        // [可选]需要配置cookie的过期时间，默认过时时间1209600秒，即2个星期。这里设置cookie过期时间为1天
+//        tbrms.setTokenValiditySeconds(60 * 60 * 24 * 1);
+//
+//        // 设置checkbox的参数名为rememberMe（默认为remember-me），
+//        //注意如果是ajax请求，参数名不是checkbox的name而是在ajax的data里
+//        //tbrms.setParameter("rememberMe");
+//        return tbrms;
+//    }
 
-        // 设置checkbox的参数名为rememberMe（默认为remember-me），
-        //注意如果是ajax请求，参数名不是checkbox的name而是在ajax的data里
-        //tbrms.setParameter("rememberMe");
-        return tbrms;
+    @Bean
+    public PersistentTokenRepository tokenRepository(){
+        JdbcTokenRepositoryImpl jdbcTokenRepositoryImpl =new JdbcTokenRepositoryImpl();
+        jdbcTokenRepositoryImpl.setDataSource(dataSource);
+        //自动创建数据库表:persistent_logins，使用一次后注释掉，不然会报错
+        //jdbcTokenRepositoryImpl.setCreateTableOnStartup(true);
+        return jdbcTokenRepositoryImpl;
     }
 }

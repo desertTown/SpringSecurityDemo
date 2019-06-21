@@ -268,6 +268,33 @@ http://localhost:8080/hello/helloUser     user/123
 
 [方案](https://mp.weixin.qq.com/s?__biz=MzA4ODIyMzEwMg==&mid=2447533957&idx=1&sn=cf55ac9c822e6c2baec0c98eaf420bc1&chksm=843bbb94b34c32823e1ae0fb1f2f75cfee88fa42a78870cd5523d3bcfd6e5b520ad9d9522b11&scene=21#wechat_redirect)
 
-#### 21. 记住我（Remember-Me）： 基于简单加密token的方案
+#### 22. 记住我（Remember-Me）： 基于简单加密token的方案
 
 http://localhost:8080/hello/helloAdmin
+
+#### 23. 记住我（Remember-Me）： 基于持久化token的方案
+
+手动生成表
+```sql
+
+DROP TABLE IF EXISTS `persistent_logins`;
+CREATE TABLE `persistent_logins` (
+  `username` VARCHAR(64) NOT NULL,
+  `series` VARCHAR(64) NOT NULL,
+  `token` VARCHAR(64) NOT NULL,
+  `last_used` TIMESTAMP NOT NULL,
+  PRIMARY KEY (`series`)
+) ENGINE=INNODB DEFAULT CHARSET=utf8mb4;
+```
+
+ 我们先分析下都需要做什么事情：
+```html
+    （1）如何开启持久化token方式：可以使用and().rememberMe()进行开启记住我，然后指定tokenRepository（），即指定了token持久化方式。
+    （2）tokenRepository怎么实现：这里我们可以使用Spring Security提供的JdbcTokenRepositoryImpl即可，这里只需要配置一个数据源即可。
+    （3）持久化token的数据保存在哪里：这里的数据是保存在persistent_logins表中。
+    （4）persistent_logins表生成方式：有两种方式可以生成，第一种就是手动方式，根据表结构自己创建表；第二种方式就是使用JdbcTokenRepositoryImpl配置为
+    自动创建，这种方式虽然会自动生成，但是存在的一个小问题就是第二次运行程序的就会保存了，
+    因为persistent_logins已经存在了，不知道底层为什么就不能判断，或者处理下异常呐？
+    所以我的使用方式就是第一次执行的时候，打开配置，生成表之后，注释掉配置。
+```
+

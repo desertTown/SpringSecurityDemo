@@ -254,3 +254,6 @@ http://localhost:8080/hello/helloUser     user/123
 @PostAuthorize： 
 > 在方法执行后再进行权限验证，适合验证带有返回值的权限，Spring EL 提供 返回对象能够在表达式语言中获取返回的对象returnObject。
 当@EnableGlobalMethodSecurity(prePostEnabled=true)的时候，@PostAuthorize可以使用
+
+
+#### 19. 使用md5加密 替换BCryptPasswordEncoder 加密方式

@@ -197,3 +197,46 @@ http://127.0.0.1:8080/index_info
 
 http://localhost:8080/hello/helloAdmin     admin/123
 http://localhost:8080/hello/helloUser     user/123
+
+
+#### 14. 基于URL动态权限：自定义AccssDesionManager
+#### 15. 基于URL动态权限：自定义Filter
+
+14, 15 的代码都是基于《基于URL动态权限：准备工作》在往下编码。最终结果和13是一致的，只是用不同实现方式
+具体Link
+ 
+[基于URL动态权限：自定义AccssDesionManager](https://mp.weixin.qq.com/s?__biz=MzA4ODIyMzEwMg==&mid=2447533903&idx=1&sn=d4a0c7024e0ab3b66cddfe447f8b100e&chksm=843bbb5eb34c32481b28bde2333bd539bae38c945ce32b5e28a13ddde44a16e237dee9896772&scene=21#wechat_redirect)
+[基于URL动态权限：自定义Filter](https://mp.weixin.qq.com/s?__biz=MzA4ODIyMzEwMg==&mid=2447533909&idx=1&sn=0cb4df975d4e1a09d06cf60342d22fa4&chksm=843bbb44b34c3252dc674b3c746e8e091bf31bd69f687b2f85f5ced5d7b48e12ad3e3c2c42f9&scene=21#wechat_redirect)
+
+#### 16. 标签sec:authorize的使用
+
+一、标签sec:authorize的使用
+
+>   在访问/index页面，user用户不应该能够看到admin page的链接
+
+1.1 引入依赖
+
+在pom.xml文件中添加依赖：
+```
+<dependency>
+        <groupId>org.thymeleaf.extras</groupId>
+        <artifactId>thymeleaf-extras-springsecurity5</artifactId>
+</dependency>
+```
+1.2 引入Spring Security的命名空间
+
+在index.html页面中引入SpringSecurity命名空间：
+
+```html
+<html xmlns="http://www.w3.org/1999/xhtml" 
+        xmlns:th="http://www.thymeleaf.org" 
+        xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">  
+```
+
+1.3 使用sec:authorize属性
+
+       在使用sec:authorize进行角色的控制：
+```html
+<p sec:authorize="hasRole('ROLE_admin')"> <a th:href="@{/hello/helloAdmin}">admin page</a></p>
+<p sec:authorize="hasAnyRole('ROLE_admin','ROLE_normal')"><a th:href="@{/hello/helloUser}">user page</a>
+```       

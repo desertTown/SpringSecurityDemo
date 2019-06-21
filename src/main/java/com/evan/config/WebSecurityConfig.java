@@ -41,10 +41,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests() // 定义哪些URL需要被保护、哪些不需要被保护
                 .antMatchers("/login").permitAll()// 设置所有人都可以访问登录页面
-                .anyRequest().authenticated()  // 任何请求,登录后可以访问
+//                .anyRequest().authenticated()  // 任何请求,登录后可以访问
                 .antMatchers("/","/index").permitAll()  // 允许/index为白名单
                 .antMatchers("/test/**","/test1/**").permitAll()   // /test/下的所有文件都为白名单：
                 .antMatchers("/res/**/*.{js,html}").permitAll()   //  把/res/的所有.js,html设置为白名单：
+                .anyRequest().access("@authService.canAccess(request,authentication)")
                 .and()
                 .formLogin().loginPage("/login")
         ;

@@ -190,3 +190,10 @@ http://127.0.0.1:8080/index_info
 启动程序， 在控制台会见到这些日志
 
 > {/hello/helloAdmin=[ROLE_admin], /hello/helloUser=[ROLE_admin, ROLE_normal]}
+
+#### 13. 基于URL动态权限：扩展access()的SpEL表达式
+
+测试：  
+
+http://localhost:8080/hello/helloAdmin     admin/123
+http://localhost:8080/hello/helloUser     user/123

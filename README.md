@@ -298,3 +298,63 @@ CREATE TABLE `persistent_logins` (
     所以我的使用方式就是第一次执行的时候，打开配置，生成表之后，注释掉配置。
 ```
 
+#### 24. 设置登录过期时间的正确姿势
+
+博主回复：spring boot2.x的版本的话，设置属性：server.servlet.session.timeout=60；1.x的版本的话，设置属性：server.session.timeout=60；注意时间单位是秒；特别注意的地方：如果设置小于60秒的话，则会默认取1分钟！
+
+对方回复：感谢您的回复，我就是如此设置的，但是似乎没用，所以想问一下是不是有其他方法
+
+
+解决
+```
+设置cookie的超时时间
+
+       当配置了“记住我“之后，session超时之后，如果remember-me的cookie并没有超时的话，
+       还是会自动登录的，所以此时就需要正确的配置remember-me的超时时间了。
+       
+       当使用简单加密token的方式，使用TokenBasedRememberMeServices进行配置：
+       tokenBasedRememberMeServices.setTokenValiditySeconds(60);
+       
+       当使用持久化token的方式，在rememberMe()之后进行配置
+       .and().rememberMe().tokenValiditySeconds(60)  
+
+```
+
+题外话：为什么session设置了小于60秒会取1分钟？
+
+TomcatServletWebServerFactory，里面有一个配置session的方法：
+```
+private void configureSession(Context context) {
+        long sessionTimeout = getSessionTimeoutInMinutes();
+        context.setSessionTimeout((int) sessionTimeout);
+        Boolean httpOnly = getSession().getCookie().getHttpOnly();
+        if (httpOnly != null) {
+            context.setUseHttpOnly(httpOnly);
+        }
+        if (getSession().isPersistent()) {
+            Manager manager = context.getManager();
+            if (manager == null) {
+                manager = new StandardManager();
+                context.setManager(manager);
+            }
+            configurePersistSession(manager);
+        }
+        else {
+            context.addLifecycleListener(new DisablePersistSessionListener());
+        }
+    }
+```
+这里调用了方法：
+getSessionTimeoutInMinutes()：
+```
+private long getSessionTimeoutInMinutes() {
+        Duration sessionTimeout = getSession().getTimeout();
+        if (isZeroOrLess(sessionTimeout)) {
+            return 0;
+        }
+        return Math.max(sessionTimeout.toMinutes(), 1);
+}
+
+```
+这里看最后return的代码，就是如果设置的超时时间小于1分钟的话，那么就取1分钟。
+

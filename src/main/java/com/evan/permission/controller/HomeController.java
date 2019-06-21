@@ -25,6 +25,9 @@ public class HomeController {
     public String index(Model model) {
         //  获取登录信息的方式
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        //未登录的情况下，返回的是一个字符串：anonymousUser
+        //登录的情况下，返回的是在CustomUserDetailService的loadUserByUsername的方法中返回的User对象。
         if("anonymousUser".equals(principal)) {
             model.addAttribute("name","anonymous");
         }else {

@@ -48,6 +48,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().access("@authService.canAccess(request,authentication)")
                 .and()
                 .formLogin().loginPage("/login")
+                // 设置session并发为1
+                .and().sessionManagement().maximumSessions(1)
         ;
 
         http.addFilterBefore(new BeforeLoginFilter(), UsernamePasswordAuthenticationFilter.class);

@@ -240,3 +240,5 @@ http://localhost:8080/hello/helloUser     user/123
 <p sec:authorize="hasRole('ROLE_admin')"> <a th:href="@{/hello/helloAdmin}">admin page</a></p>
 <p sec:authorize="hasAnyRole('ROLE_admin','ROLE_normal')"><a th:href="@{/hello/helloUser}">user page</a>
 ```       
+
+#### 17.获取用户信息和session并发控制

@@ -183,3 +183,10 @@ Object principal = SecurityContextHolder.getContext().getAuthentication().getPri
 ```
 
 http://127.0.0.1:8080/index_info     
+
+
+#### 12. 基于URL动态权限：准备工作
+
+启动程序， 在控制台会见到这些日志
+
+> {/hello/helloAdmin=[ROLE_admin], /hello/helloUser=[ROLE_admin, ROLE_normal]}

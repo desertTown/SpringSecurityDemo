@@ -260,3 +260,14 @@ http://localhost:8080/hello/helloUser     user/123
 
 #### 20. MD5是加密算法吗？
 [MD5是摘要算法不是加密算法](https://mp.weixin.qq.com/s?__biz=MzA4ODIyMzEwMg==&mid=2447533953&idx=1&sn=77925c9e38f8995739104d26f6769628&chksm=843bbb90b34c328684c04a5ae4ddad8ec995a939dd8a93fc93fc21c4f98397417babe9e6a06f&scene=21#wechat_redirect)
+
+#### 21. 记住我（Remember-Me）： 方案
+   对于Remember-Me的功能，SpringSecurity提供了两种方式：
+- （1）基于简单加密token的方法。   (安全性低)
+- （2）基于持久化token的方法。
+
+[方案](https://mp.weixin.qq.com/s?__biz=MzA4ODIyMzEwMg==&mid=2447533957&idx=1&sn=cf55ac9c822e6c2baec0c98eaf420bc1&chksm=843bbb94b34c32823e1ae0fb1f2f75cfee88fa42a78870cd5523d3bcfd6e5b520ad9d9522b11&scene=21#wechat_redirect)
+
+#### 21. 记住我（Remember-Me）： 基于简单加密token的方案
+
+http://localhost:8080/hello/helloAdmin

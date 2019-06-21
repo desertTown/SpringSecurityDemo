@@ -242,3 +242,15 @@ http://localhost:8080/hello/helloUser     user/123
 ```       
 
 #### 17.获取用户信息和session并发控制
+
+
+#### 18. Security注解：@PreAuthorize,@PostAuthorize, @Secured, EL实现方法安全
+@Secured:
+>  当@EnableGlobalMethodSecurity(securedEnabled=true)的时候，@Secured可以使用：
+
+@PreAuthorize： 
+>   Spring的 @PreAuthorize/@PostAuthorize 注解更适合方法级的安全,也支持Spring 表达式语言，提供了基于表达式的访问控制。 当@EnableGlobalMethodSecurity(prePostEnabled=true)的时候，@PreAuthorize可以使用：
+
+@PostAuthorize： 
+> 在方法执行后再进行权限验证，适合验证带有返回值的权限，Spring EL 提供 返回对象能够在表达式语言中获取返回的对象returnObject。
+当@EnableGlobalMethodSecurity(prePostEnabled=true)的时候，@PostAuthorize可以使用

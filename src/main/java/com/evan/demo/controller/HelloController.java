@@ -25,6 +25,7 @@ public class HelloController {
 
     @GetMapping("/helloUser")
 //    @PreAuthorize("hasAnyRole('admin','normal')")
+//    @PreAuthorize("hasRole('normal') AND hasRole('admin')")  如果我们要求用户必须同时拥有normal和admin的话.就这么写
     public String helloUser() {
         return "Hello,user";
     }

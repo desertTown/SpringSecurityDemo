@@ -257,3 +257,6 @@ http://localhost:8080/hello/helloUser     user/123
 
 
 #### 19. 使用md5加密 替换BCryptPasswordEncoder 加密方式
+
+#### 20. MD5是加密算法吗？
+[MD5是摘要算法不是加密算法](https://mp.weixin.qq.com/s?__biz=MzA4ODIyMzEwMg==&mid=2447533953&idx=1&sn=77925c9e38f8995739104d26f6769628&chksm=843bbb90b34c328684c04a5ae4ddad8ec995a939dd8a93fc93fc21c4f98397417babe9e6a06f&scene=21#wechat_redirect)
